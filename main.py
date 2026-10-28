@@ -46,7 +46,7 @@ def get_numbers_ticket(min_number: int, max_number: int, quantity: int) -> list[
         print("Max number, min number and quantity must be integers")
         return []
 
-    if not quantity or quantity > max_number - min_number + 1:
+    if quantity < 0 or quantity > max_number - min_number + 1:
         print(
             "Invalid quantity. Quantity must be an integer that is not bigger than amount of numbers between max number and min number"
         )
@@ -56,6 +56,7 @@ def get_numbers_ticket(min_number: int, max_number: int, quantity: int) -> list[
 
 
 print("Ваші лотерейні числа: ", get_numbers_ticket(1, 49, 6))
+print("Ваші лотерейні числа: ", get_numbers_ticket(1, 49, 0))
 print("Ваші лотерейні числа: ", get_numbers_ticket(-1, 49, 6))
 print("Ваші лотерейні числа: ", get_numbers_ticket(1.5, 49, 6))
 print("Ваші лотерейні числа: ", get_numbers_ticket(59, 49, 6))
