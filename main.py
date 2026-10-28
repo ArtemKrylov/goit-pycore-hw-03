@@ -15,33 +15,51 @@ def get_days_from_today(date: str) -> int | None:
         return None
 
     curr_date = datetime.today()
-    delta = parsed_date.toordinal() - curr_date.toordinal()
+    delta = curr_date.toordinal() - parsed_date.toordinal()
     return delta
 
 
 print("Днів між 2021-10-09 та сьогодні: ", get_days_from_today("2021-10-09"))
-print("Днів між 2026-10-27 та сьогодні: ", get_days_from_today("2026-10-27"))
+print("Днів між 2026-10-27 та сьогодні: ", get_days_from_today("2026-10-30"))
 
 
 # Завдання 2
-def get_numbers_ticket(min: int, max: int, quantity: int) -> list[int]:
-    # return sorted list of quantity unique integers between min (>=1) and max (<=1000)
-    try:
-        min < 1
-    except:
-        print("Min must be not less than 1")
+def get_numbers_ticket(min_number: int, max_number: int, quantity: int) -> list[int]:
+    # return sorted list of quantity unique integers between min_number (>=1) and max_number (<=1000)
+    if min_number < 1:
+        print("Min number must be not less than 1")
         return []
 
-    try:
-        max > 1000
-    except:
-        print("Max must be not bigger than 1000")
+    if max_number > 1000:
+        print("Max number must be not bigger than 1000")
         return []
 
-    return sorted(random.sample(range(min, max + 1), quantity))
+    if min_number > max_number:
+        print("Max number must be bigger than min number")
+        return []
+
+    if (
+        not isinstance(min_number, int)
+        or not isinstance(max_number, int)
+        or not isinstance(quantity, int)
+    ):
+        print("Max number, min number and quantity must be integers")
+        return []
+
+    if not quantity or quantity > max_number - min_number + 1:
+        print(
+            "Invalid quantity. Quantity must be an integer that is not bigger than amount of numbers between max number and min number"
+        )
+        return []
+
+    return sorted(random.sample(range(min_number, max_number + 1), quantity))
 
 
 print("Ваші лотерейні числа: ", get_numbers_ticket(1, 49, 6))
+print("Ваші лотерейні числа: ", get_numbers_ticket(-1, 49, 6))
+print("Ваші лотерейні числа: ", get_numbers_ticket(1.5, 49, 6))
+print("Ваші лотерейні числа: ", get_numbers_ticket(59, 49, 6))
+print("Ваші лотерейні числа: ", get_numbers_ticket(47, 49, 6))
 
 
 # Завдання 3
@@ -76,15 +94,6 @@ print("Нормалізовані номери телефонів для SMS-р�
 
 
 # Завдання 4
-class User(TypedDict):
-    name: str
-    birthday: str
-
-
-class Congratulation(TypedDict):
-    name: str
-    congratulation_date: str
-
 
 DATE_FORMAT = "%Y.%m.%d"
 WEEKEND_DAYS = (5, 6)
@@ -92,8 +101,8 @@ DAYS_IN_WEEK = 7
 
 
 def get_upcoming_birthdays(
-    users: list[User], date_format: str = DATE_FORMAT, is_workday_congrats: bool = True
-) -> list[Congratulation]:
+    users: list, date_format: str = DATE_FORMAT, is_workday_congrats: bool = True
+) -> list:
     # gets users list with name and birhday properties and return list of upcoming birthday within next 7 day (including today); if is_workday_congrats param is true and birthday is on weekend day - moves congrat to nearest workday
 
     curr_date = datetime.today()
